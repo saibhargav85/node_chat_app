@@ -30,12 +30,15 @@ jQuery('#message-form').on('submit', function (e) {
 
 var locationButon = jQuery('#send-location');
 locationButon.on('click', function () {
-    if (navigator.geolocation) {
+    if (!navigator.geolocation) {
         return alert('geo location not supported by browser');
     }
 
     navigator.geolocation.getCurrentPosition(function (position) {
-        console.log(position)
+        socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
     }, function () { alert('Unable to reach geo location') })
 });
 
